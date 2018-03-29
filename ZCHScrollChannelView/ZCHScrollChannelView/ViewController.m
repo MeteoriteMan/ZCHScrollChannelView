@@ -21,10 +21,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     _scrollView = [[ZCHChannelScrollView alloc] init];
-    _scrollView.intervalInLine = 20;
-    _scrollView.intervalHeader = 10;
-    _scrollView.intervalFooter = 30;
-    _scrollView.titleArray = @[@"赤彬赤彬赤彬",@"橙彬",@"黄彬黄彬黄彬黄彬",@"绿彬",@"青彬青彬青彬青彬",@"蓝彬",@"紫彬"];
+    _scrollView.intervalInLine = 40;
+    _scrollView.intervalHeader = 20;
+    _scrollView.intervalFooter = 20;
+    _scrollView.titleArray = @[@"全部" ,@"内科" ,@"外科" ,@"妇科" ,@"儿科" ,@"口腔"];
     _scrollView.backgroundColor = [UIColor redColor];
     [self.view addSubview:_scrollView];
     self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;

@@ -119,7 +119,7 @@
     btn.selected = !btn.isSelected;
     _lastSelectedButton = btn;
     CGPoint point = CGPointMake(btn.center.x, 0);
-    if (point.x - self.bounds.size.width / 2 + btn.bounds.size.width / 2 + _intervalHeader >= 0 && point.x + self.bounds.size.width / 2 <= self.contentSize.width) {
+    if (point.x - self.bounds.size.width / 2 + btn.bounds.size.width / 2 >= _intervalHeader && point.x + self.bounds.size.width / 2 <= self.contentSize.width) {
         [self setContentOffset:CGPointMake(point.x - self.bounds.size.width / 2, point.y) animated:YES];
     } else if (point.x - self.bounds.size.width / 2 + btn.bounds.size.width / 2 <= 0) {
         [self setContentOffset:CGPointMake(0, 0) animated:YES];
