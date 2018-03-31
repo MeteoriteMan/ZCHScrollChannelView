@@ -8,34 +8,82 @@
 
 #import "ViewController.h"
 #import "ZCHChannelScrollView.h"
+#import "CollectionViewFlowLayout.h"
+#import <Masonry.h>
 
-@interface ViewController ()
+@interface ViewController () <UICollectionViewDataSource ,UICollectionViewDelegate>
 
-@property (nonatomic ,strong) ZCHChannelScrollView *scrollView;
+@property (nonatomic ,strong) ZCHChannelScrollView *channelView;
+
+@property (nonatomic ,strong) UICollectionView *collectionView;
+
+@property (nonatomic ,strong) NSArray *titleArray;
 
 @end
 
 @implementation ViewController
 
+static NSString *cellID = @"cellID";
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    _scrollView = [[ZCHChannelScrollView alloc] init];
-    _scrollView.intervalInLine = 40;
-    _scrollView.intervalHeader = 20;
-    _scrollView.intervalFooter = 20;
-    _scrollView.titleArray = @[@"全部" ,@"内科" ,@"外科" ,@"妇科" ,@"儿科" ,@"口腔"];
-    _scrollView.backgroundColor = [UIColor redColor];
-    [self.view addSubview:_scrollView];
-    self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_scrollView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_scrollView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:20]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_scrollView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
-    ///解决警告可以把第二个attribute换成NSLayoutAttributeHeight
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_scrollView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:50]];
+    _titleArray = @[@"全部" ,@"内科" ,@"外科" ,@"妇科" ,@"儿科" ,@"口腔"];
+    _channelView = [[ZCHChannelScrollView alloc] init];
+    _channelView.intervalInLine = 40;
+    _channelView.intervalHeader = 20;
+    _channelView.intervalFooter = 20;
+    _channelView.titleArray = self.titleArray;
+    _channelView.backgroundColor = [UIColor redColor];
+    [self.view addSubview:_channelView];
+    [_channelView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.right.offset(0);
+        make.height.offset(48);
+    }];
+
+    // MARK: 联动(点击channel联动collectionView)
+    __weak typeof(self) weakSelf = self;
+    _channelView.chancelSelectedBlock = ^(NSInteger tag) {
+        [weakSelf.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:tag inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
+    };
+
+    CollectionViewFlowLayout *flowLayout = [[CollectionViewFlowLayout alloc] init];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
+    _collectionView.bounces = NO;
+    _collectionView.pagingEnabled = YES;
+    _collectionView.dataSource = self;
+    _collectionView.delegate = self;
+    [self.view addSubview:_collectionView];
+    [_collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.offset(0);
+        make.top.equalTo(_channelView.mas_bottom);
+    }];
+    [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:cellID];
 
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == _collectionView) {
+        //滚动的X距离
+        CGFloat x = scrollView.contentOffset.x;
+        NSInteger interger = x / _collectionView.bounds.size.width;
+        _channelView.btnTag = interger;
+    }
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor colorWithRed:arc4random_uniform(256) / 255.0 green:arc4random_uniform(256) / 255.0 blue:arc4random_uniform(256) / 255.0 alpha:1];
+    return cell;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _titleArray.count;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

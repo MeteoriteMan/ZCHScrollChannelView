@@ -23,6 +23,11 @@
 
 @implementation ZCHChannelScrollView
 
+- (void)setBtnTag:(NSInteger)btnTag {
+    _btnTag = btnTag;
+    [self selectedBtnWithTag:btnTag];
+}
+
 - (UIColor *)normalColor {
     if (_normalColor == nil) {
         _normalColor = [UIColor groupTableViewBackgroundColor];
@@ -115,22 +120,35 @@
 }
 
 - (void)btnClickWithBtn:(UIButton *)btn {
-    _lastSelectedButton.selected = !_lastSelectedButton.isSelected;
-    btn.selected = !btn.isSelected;
-    _lastSelectedButton = btn;
-    CGPoint point = CGPointMake(btn.center.x, 0);
-    if (point.x - self.bounds.size.width / 2 + btn.bounds.size.width / 2 >= _intervalHeader && point.x + self.bounds.size.width / 2 <= self.contentSize.width) {
-        [self setContentOffset:CGPointMake(point.x - self.bounds.size.width / 2, point.y) animated:YES];
-    } else if (point.x - self.bounds.size.width / 2 + btn.bounds.size.width / 2 <= 0) {
-        [self setContentOffset:CGPointMake(0, 0) animated:YES];
-    } else if (point.x + self.bounds.size.width / 2 > self.contentSize.width) {
-        [self setContentOffset:CGPointMake(self.contentSize.width - self.bounds.size.width, 0) animated:YES];
-    }
-    [UIView animateWithDuration:.25 animations:^{
-        _twigView.frame = CGRectMake(_lastSelectedButton.frame.origin.x, _lastSelectedButton.bounds.size.height - 2, _lastSelectedButton.bounds.size.width, 2);
-    }];
+    [self selectedBtnWithTag:btn.tag];
     if (self.chancelSelectedBlock) {
         self.chancelSelectedBlock(btn.tag);
+    }
+}
+
+/**
+ 根据tag滚动twigView,以及选中Btn
+
+ @param tag 按钮编号
+ */
+- (void)selectedBtnWithTag:(NSInteger)tag {
+    //取出btn
+    UIButton *btn = _buttonArray[tag];
+    if (btn != _lastSelectedButton) {
+        _lastSelectedButton.selected = !_lastSelectedButton.isSelected;
+        btn.selected = !btn.isSelected;
+        _lastSelectedButton = btn;
+        CGPoint point = CGPointMake(btn.center.x, 0);
+        if (point.x - self.bounds.size.width / 2 + btn.bounds.size.width / 2 >= _intervalHeader && point.x + self.bounds.size.width / 2 <= self.contentSize.width) {
+            [self setContentOffset:CGPointMake(point.x - self.bounds.size.width / 2, point.y) animated:YES];
+        } else if (point.x - self.bounds.size.width / 2 + btn.bounds.size.width / 2 <= 0) {
+            [self setContentOffset:CGPointMake(0, 0) animated:YES];
+        } else if (point.x + self.bounds.size.width / 2 > self.contentSize.width) {
+            [self setContentOffset:CGPointMake(self.contentSize.width - self.bounds.size.width, 0) animated:YES];
+        }
+        [UIView animateWithDuration:.25 animations:^{
+            _twigView.frame = CGRectMake(_lastSelectedButton.frame.origin.x, _lastSelectedButton.bounds.size.height - 2, _lastSelectedButton.bounds.size.width, 2);
+        }];
     }
 }
 

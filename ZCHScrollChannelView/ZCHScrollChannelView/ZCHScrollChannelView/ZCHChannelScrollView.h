@@ -28,6 +28,12 @@
 //选中颜色
 @property (nonatomic ,assign) UIColor *selectedColor;
 
+//选中第几个Btn(tag,0-n)
+@property (nonatomic ,assign) NSInteger btnTag;
+
+/**
+ 点击channel中的按钮回调方法.tag为第几个按钮
+ */
 @property (nonatomic ,copy) void(^chancelSelectedBlock)(NSInteger tag);
 
 @end
