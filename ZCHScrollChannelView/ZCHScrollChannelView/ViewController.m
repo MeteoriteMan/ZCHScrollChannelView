@@ -57,7 +57,7 @@ static NSString *cellID = @"cellID";
     [self.view addSubview:_collectionView];
     [_collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.offset(0);
-        make.top.equalTo(_channelView.mas_bottom);
+        make.top.equalTo(self.channelView.mas_bottom);
     }];
     [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:cellID];
 

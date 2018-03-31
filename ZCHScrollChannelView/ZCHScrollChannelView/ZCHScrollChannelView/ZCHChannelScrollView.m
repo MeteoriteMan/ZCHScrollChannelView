@@ -127,7 +127,7 @@
         CGFloat H = self.bounds.size.height;
         btn.frame = CGRectMake(X, Y, W, H);
         [UIView animateWithDuration:.25 animations:^{
-            _twigView.frame = CGRectMake(_lastSelectedButton.frame.origin.x, _lastSelectedButton.bounds.size.height - 2, _lastSelectedButton.bounds.size.width, 2);
+            self.twigView.frame = CGRectMake(self.lastSelectedButton.frame.origin.x, self.lastSelectedButton.bounds.size.height - 2, self.lastSelectedButton.bounds.size.width, 2);
         }];
     }
 }
@@ -167,7 +167,7 @@
             [self setContentOffset:CGPointMake(self.contentSize.width - self.bounds.size.width, 0) animated:YES];
         }
         [UIView animateWithDuration:.25 animations:^{
-            _twigView.frame = CGRectMake(_lastSelectedButton.frame.origin.x, _lastSelectedButton.bounds.size.height - 2, _lastSelectedButton.bounds.size.width, 2);
+            self.twigView.frame = CGRectMake(self.lastSelectedButton.frame.origin.x, self.lastSelectedButton.bounds.size.height - 2, self.lastSelectedButton.bounds.size.width, 2);
         }];
     }
 }
