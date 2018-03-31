@@ -13,6 +13,7 @@
 ///scrollView标签
 @property (nonatomic ,strong) NSArray <NSString *> *titleArray;
 
+// MARK: 间距
 ///组头间距
 @property (nonatomic ,assign) NSInteger intervalHeader;
 
@@ -22,24 +23,28 @@
 ///组间间距
 @property (nonatomic ,assign) NSInteger intervalInLine;
 
-//normal颜色
+// MARK: 颜色
+///normal颜色
 @property (nonatomic ,assign) UIColor *normalColor;
 
-//选中颜色
+///选中颜色
 @property (nonatomic ,assign) UIColor *selectedColor;
 
-//选中第几个Btn(tag,0-n)
+// MARK: 字体
+//字体:默认system.re
+@property (nonatomic ,strong) UIFont *font;
+
+// MARK: 字体大小
+//字体大小:默认15
+@property (nonatomic ,assign) CGFloat fontSize;
+
+// MARK:联动有关
+//选中第几个Btn(tag,0-n).传入参数滚动到相应Btn
 @property (nonatomic ,assign) NSInteger btnTag;
 
 /**
  点击channel中的按钮回调方法.tag为第几个按钮
  */
 @property (nonatomic ,copy) void(^chancelSelectedBlock)(NSInteger tag);
-
-@end
-
-@interface UIButton (zch_Button)
-
-+ (instancetype)zch_ButtonWithTitle:(NSString *)str andFont:(UIFont *)font andNormalColor:(UIColor *)normalColor andSelectedColor:(UIColor *)slectedColor;
 
 @end

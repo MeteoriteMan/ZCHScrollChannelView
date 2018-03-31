@@ -7,27 +7,25 @@
 //
 
 #import "ZCHChannelScrollView.h"
+#import "ZCHChannelButton.h"
 
 @interface ZCHChannelScrollView ()
 
 ///按钮数组
-@property (nonatomic ,strong) NSArray <UIButton *> *buttonArray;
+@property (nonatomic ,strong) NSArray <ZCHChannelButton *> *buttonArray;
 
 ///滚动条
 @property (nonatomic ,strong) UIView *twigView;
 
 ///上一个选中Button
-@property (nonatomic ,strong) UIButton *lastSelectedButton;
+@property (nonatomic ,strong) ZCHChannelButton *lastSelectedButton;
 
 @end
 
 @implementation ZCHChannelScrollView
 
-- (void)setBtnTag:(NSInteger)btnTag {
-    _btnTag = btnTag;
-    [self selectedBtnWithTag:btnTag];
-}
-
+// MARK: 属性有关
+//颜色
 - (UIColor *)normalColor {
     if (_normalColor == nil) {
         _normalColor = [UIColor groupTableViewBackgroundColor];
@@ -42,11 +40,33 @@
     return _selectedColor;
 }
 
+//字体
+- (UIFont *)font {
+    if (_font == nil) {
+        _font = [UIFont systemFontOfSize:self.fontSize];
+    }
+    return _font;
+}
+
+//字体大小
+- (CGFloat)fontSize {
+    if (_fontSize == 0) {//没有设置字体
+        _fontSize = 15;
+    }
+    return _fontSize;
+}
+
+- (void)setBtnTag:(NSInteger)btnTag {
+    _btnTag = btnTag;
+    [self selectedBtnWithTag:btnTag];
+}
+
+// MARK: btn有关
 - (void)setTitleArray:(NSArray<NSString *> *)titleArray {
     _titleArray = titleArray;
     NSMutableArray *arrayM = [NSMutableArray array];
     for (int i  = 0; i < titleArray.count; i++) {
-        UIButton *btn = [UIButton zch_ButtonWithTitle:titleArray[i] andFont:[UIFont systemFontOfSize:18] andNormalColor:self.normalColor andSelectedColor:self.selectedColor];
+        ZCHChannelButton *btn = [ZCHChannelButton zch_ButtonWithTitle:titleArray[i] normalFont:self.font normalColor:self.normalColor selectedColor:self.selectedColor];
         _twigView.backgroundColor = self.selectedColor;
         btn.tag = i;
         [btn sizeToFit];
@@ -59,7 +79,7 @@
     _buttonArray = buttonArray;
     CGFloat lastX = _intervalHeader;
     for (int i = 0; i < buttonArray.count; i++) {
-        UIButton *btn = ((UIButton *)buttonArray[i]);
+        ZCHChannelButton *btn = ((ZCHChannelButton *)buttonArray[i]);
         [btn addTarget:self action:@selector(btnClickWithBtn:) forControlEvents:UIControlEventTouchUpInside];
         if (i == 0) {//初始化第一个btn的选中状态
             btn.selected = YES;
@@ -96,7 +116,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     for (int i = 0; i < _buttonArray.count; i++) {
-        UIButton *btn = ((UIButton *)_buttonArray[i]);
+        ZCHChannelButton *btn = ((ZCHChannelButton *)_buttonArray[i]);
         //x
         CGFloat X = btn.frame.origin.x;
         //y
@@ -119,7 +139,7 @@
     [self addSubview:_twigView];
 }
 
-- (void)btnClickWithBtn:(UIButton *)btn {
+- (void)btnClickWithBtn:(ZCHChannelButton *)btn {
     [self selectedBtnWithTag:btn.tag];
     if (self.chancelSelectedBlock) {
         self.chancelSelectedBlock(btn.tag);
@@ -133,7 +153,7 @@
  */
 - (void)selectedBtnWithTag:(NSInteger)tag {
     //取出btn
-    UIButton *btn = _buttonArray[tag];
+    ZCHChannelButton *btn = _buttonArray[tag];
     if (btn != _lastSelectedButton) {
         _lastSelectedButton.selected = !_lastSelectedButton.isSelected;
         btn.selected = !btn.isSelected;
@@ -160,16 +180,4 @@
 }
 */
 
-@end
-
-@implementation UIButton (zch_Button)
-
-+ (instancetype)zch_ButtonWithTitle:(NSString *)str andFont:(UIFont *)font andNormalColor:(UIColor *)normalColor andSelectedColor:(UIColor *)slectedColor {
-    UIButton *btn = [[UIButton alloc] init];
-    [btn setTitle:str forState:UIControlStateNormal];
-    btn.titleLabel.font = font;
-    [btn setTitleColor:normalColor forState:UIControlStateNormal];
-    [btn setTitleColor:slectedColor forState:UIControlStateSelected];
-    return btn;
-}
 @end
