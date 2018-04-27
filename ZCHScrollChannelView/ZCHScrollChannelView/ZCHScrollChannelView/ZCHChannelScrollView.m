@@ -159,12 +159,16 @@
         btn.selected = !btn.isSelected;
         _lastSelectedButton = btn;
         CGPoint point = CGPointMake(btn.center.x, 0);
-        if (point.x - self.bounds.size.width / 2 + btn.bounds.size.width / 2 >= _intervalHeader && point.x + self.bounds.size.width / 2 <= self.contentSize.width) {
-            [self setContentOffset:CGPointMake(point.x - self.bounds.size.width / 2, point.y) animated:YES];
-        } else if (point.x - self.bounds.size.width / 2 + btn.bounds.size.width / 2 <= 0) {
+        if (point.x - btn.bounds.size.width / 2 - self.bounds.size.width / 2 + _intervalHeader <= 0) {
             [self setContentOffset:CGPointMake(0, 0) animated:YES];
-        } else if (point.x + self.bounds.size.width / 2 > self.contentSize.width) {
-            [self setContentOffset:CGPointMake(self.contentSize.width - self.bounds.size.width, 0) animated:YES];
+        } else if (point.x + btn.bounds.size.width / 2 + self.bounds.size.width / 2 + _intervalFooter >= self.contentSize.width) {
+            if (self.contentSize.width <= self.bounds.size.width) {
+                [self setContentOffset:CGPointMake(0, 0) animated:YES];
+            } else {
+                [self setContentOffset:CGPointMake(self.contentSize.width - self.bounds.size.width, 0) animated:YES];
+            }
+        } else {
+            [self setContentOffset:CGPointMake(point.x - self.bounds.size.width / 2 , 0) animated:YES];
         }
         [UIView animateWithDuration:.25 animations:^{
             self.twigView.frame = CGRectMake(self.lastSelectedButton.frame.origin.x, self.lastSelectedButton.bounds.size.height - 2, self.lastSelectedButton.bounds.size.width, 2);
