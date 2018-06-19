@@ -22,7 +22,9 @@
 
 @end
 
-@implementation ZCHChannelScrollView
+@implementation ZCHChannelScrollView {
+    UIColor *_twigViewColor;
+}
 
 // MARK: 属性有关
 //颜色
@@ -38,6 +40,18 @@
         _selectedColor = [UIColor darkTextColor];
     }
     return _selectedColor;
+}
+
+- (UIColor *)twigViewColor {
+    if (_twigViewColor == nil) {
+        _twigViewColor = self.selectedColor;
+    }
+    return _twigViewColor;
+}
+
+- (void)setTwigViewColor:(UIColor *)twigViewColor {
+    _twigViewColor = twigViewColor;
+    self.twigView.backgroundColor = twigViewColor;
 }
 
 //字体
@@ -56,6 +70,14 @@
     return _fontSize;
 }
 
+- (UIView *)twigView {
+    if (_twigView == nil) {
+        _twigView = [UIView new];
+        _twigView.backgroundColor = self.twigViewColor;
+    }
+    return _twigView;
+}
+
 - (void)setBtnTag:(NSInteger)btnTag {
     _btnTag = btnTag;
     [self selectedBtnWithTag:btnTag];
@@ -67,7 +89,6 @@
     NSMutableArray *arrayM = [NSMutableArray array];
     for (int i  = 0; i < titleArray.count; i++) {
         ZCHChannelButton *btn = [ZCHChannelButton zch_ButtonWithTitle:titleArray[i] normalFont:self.font normalColor:self.normalColor selectedColor:self.selectedColor];
-        _twigView.backgroundColor = self.selectedColor;
         btn.tag = i;
         [btn sizeToFit];
         [arrayM addObject:btn];
@@ -83,7 +104,7 @@
         [btn addTarget:self action:@selector(btnClickWithBtn:) forControlEvents:UIControlEventTouchUpInside];
         if (i == 0) {//初始化第一个btn的选中状态
             btn.selected = YES;
-            _lastSelectedButton = btn;
+            self.lastSelectedButton = btn;
         }
         [self addSubview:btn];
         //x
@@ -95,10 +116,10 @@
         //h高暂不做处理
         CGFloat H = btn.frame.size.height;
         btn.frame = CGRectMake(X, Y, W, H);
-        lastX = X + W + _intervalInLine;
+        lastX = X + W + self.intervalInLine;
     }
     //这个时候应该是没有height的.暂不做处理
-    self.contentSize = CGSizeMake(lastX - _intervalInLine + _intervalFooter, self.bounds.size.height);
+    self.contentSize = CGSizeMake(lastX - self.intervalInLine + self.intervalFooter, self.bounds.size.height);
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -135,8 +156,7 @@
 - (void)setupUI {
     self.showsHorizontalScrollIndicator = 0;
     self.bounces = NO;
-    _twigView = [[UIView alloc] init];
-    [self addSubview:_twigView];
+    [self addSubview:self.twigView];
 }
 
 - (void)btnClickWithBtn:(ZCHChannelButton *)btn {

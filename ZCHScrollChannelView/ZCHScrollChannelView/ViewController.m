@@ -34,6 +34,7 @@ static NSString *cellID = @"cellID";
     _channelView.intervalHeader = 20;
     _channelView.intervalFooter = 20;
     _channelView.backgroundColor = [UIColor redColor];
+    _channelView.twigViewColor = [UIColor greenColor];
     //这个要最后使用
     _channelView.titleArray = self.titleArray;
     [self.view addSubview:_channelView];
@@ -63,34 +64,45 @@ static NSString *cellID = @"cellID";
 
 }
 
-//上下联动之滑动下面.滚动上面
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    if (scrollView == _collectionView) {
-        // 停止类型1、停止类型2
-        BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging &&    !scrollView.decelerating;
-        if (scrollToScrollStop) {
-            [self scrollViewDidEndScrollWithContentOffset:scrollView.contentOffset];
+/////方法一
+////上下联动之滑动下面.滚动上面
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+//    if (scrollView == _collectionView) {
+//        // 停止类型1、停止类型2
+//        BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging &&    !scrollView.decelerating;
+//        if (scrollToScrollStop) {
+//            [self scrollViewDidEndScrollWithContentOffset:scrollView.contentOffset];
+//        }
+//    }
+//}
+//
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+//    if (scrollView == _collectionView) {
+//        if (!decelerate) {
+//            // 停止类型3
+//            BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
+//            if (dragToDragStop) {
+//                [self scrollViewDidEndScrollWithContentOffset:scrollView.contentOffset];
+//            }
+//        }
+//    }
+//}
+//
+//- (void)scrollViewDidEndScrollWithContentOffset:(CGPoint)contentOffset {
+//    //滚动的X距离
+//    CGFloat x = contentOffset.x;
+//    NSInteger interger = x / _collectionView.bounds.size.width;
+//    _channelView.btnTag = interger;
+//}
+
+//方法二
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == self.collectionView) {
+        if (scrollView.isDragging || scrollView.isTracking || scrollView.isDecelerating) {//手动滚动
+            // 计算Page
+            self.channelView.btnTag = (scrollView.contentOffset.x / scrollView.bounds.size.width);
         }
     }
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (scrollView == _collectionView) {
-        if (!decelerate) {
-            // 停止类型3
-            BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
-            if (dragToDragStop) {
-                [self scrollViewDidEndScrollWithContentOffset:scrollView.contentOffset];
-            }
-        }
-    }
-}
-
-- (void)scrollViewDidEndScrollWithContentOffset:(CGPoint)contentOffset {
-    //滚动的X距离
-    CGFloat x = contentOffset.x;
-    NSInteger interger = x / _collectionView.bounds.size.width;
-    _channelView.btnTag = interger;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {

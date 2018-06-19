@@ -25,10 +25,13 @@
 
 // MARK: 颜色
 ///normal颜色
-@property (nonatomic ,assign) UIColor *normalColor;
+@property (nonatomic ,strong) UIColor *normalColor;
 
 ///选中颜色
-@property (nonatomic ,assign) UIColor *selectedColor;
+@property (nonatomic ,strong) UIColor *selectedColor;
+
+//twigView颜色
+@property (nonatomic ,strong) UIColor *twigViewColor;
 
 // MARK: 字体
 //字体:默认system.re
