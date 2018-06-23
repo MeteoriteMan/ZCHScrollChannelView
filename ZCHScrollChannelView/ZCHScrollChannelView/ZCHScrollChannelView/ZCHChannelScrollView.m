@@ -86,6 +86,11 @@
 // MARK: btn有关
 - (void)setTitleArray:(NSArray<NSString *> *)titleArray {
     _titleArray = titleArray;
+    for (UIView *subView in self.subviews) {
+        if ([subView isKindOfClass:[ZCHChannelButton class]]) {
+            [subView removeFromSuperview];
+        }
+    }
     NSMutableArray *arrayM = [NSMutableArray array];
     for (int i  = 0; i < titleArray.count; i++) {
         ZCHChannelButton *btn = [ZCHChannelButton zch_ButtonWithTitle:titleArray[i] normalFont:self.font normalColor:self.normalColor selectedColor:self.selectedColor];
