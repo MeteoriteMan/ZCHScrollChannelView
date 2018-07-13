@@ -83,17 +83,15 @@
     [self selectedBtnWithTag:btnTag];
 }
 
-// MARK: btn有关
-- (void)setTitleArray:(NSArray<NSString *> *)titleArray {
-    _titleArray = titleArray;
+- (void)reloadData {
     for (UIView *subView in self.subviews) {
         if ([subView isKindOfClass:[ZCHChannelButton class]]) {
             [subView removeFromSuperview];
         }
     }
     NSMutableArray *arrayM = [NSMutableArray array];
-    for (int i  = 0; i < titleArray.count; i++) {
-        ZCHChannelButton *btn = [ZCHChannelButton zch_ButtonWithTitle:titleArray[i] normalFont:self.font normalColor:self.normalColor selectedColor:self.selectedColor];
+    for (int i  = 0; i < self.titleArray.count; i++) {
+        ZCHChannelButton *btn = [ZCHChannelButton zch_ButtonWithTitle:self.titleArray[i] normalFont:self.font normalColor:self.normalColor selectedColor:self.selectedColor];
         btn.tag = i;
         [btn sizeToFit];
         [arrayM addObject:btn];
@@ -101,6 +99,7 @@
     self.buttonArray = arrayM.copy;
 }
 
+// 计算SubView的frame
 - (void)setButtonArray:(NSArray *)buttonArray {
     _buttonArray = buttonArray;
     CGFloat lastX = _intervalHeader;
@@ -110,6 +109,7 @@
         if (i == 0) {//初始化第一个btn的选中状态
             btn.selected = YES;
             self.lastSelectedButton = btn;
+            [self updateTwigView];
         }
         [self addSubview:btn];
         //x
@@ -153,7 +153,7 @@
         CGFloat H = self.bounds.size.height;
         btn.frame = CGRectMake(X, Y, W, H);
         [UIView animateWithDuration:.25 animations:^{
-            self.twigView.frame = CGRectMake(self.lastSelectedButton.frame.origin.x, self.lastSelectedButton.bounds.size.height - 2, self.lastSelectedButton.bounds.size.width, 2);
+            [self updateTwigView];
         }];
     }
 }
@@ -169,6 +169,20 @@
     if (self.chancelSelectedBlock) {
         self.chancelSelectedBlock(btn.tag);
     }
+}
+
+- (void)updateTwigView {
+    CGFloat twigViewWidth;
+    if (self.twigViewEqualToButtonWidth) {
+        twigViewWidth = self.lastSelectedButton.bounds.size.width;
+    } else {
+        twigViewWidth = self.twigViewWidth;
+    }
+    self.twigView.frame = CGRectMake(0, 0, twigViewWidth, self.twigViewHeight);
+    self.twigView.center = CGPointMake(self.lastSelectedButton.center.x, self.lastSelectedButton.bounds.size.height - self.twigViewHeight);
+    self.twigView.layer.cornerRadius = self.twigViewCornerRadius;
+    self.twigView.layer.masksToBounds = YES;
+    [self.twigView layoutIfNeeded];
 }
 
 /**
@@ -196,7 +210,7 @@
             [self setContentOffset:CGPointMake(point.x - self.bounds.size.width / 2 , 0) animated:YES];
         }
         [UIView animateWithDuration:.25 animations:^{
-            self.twigView.frame = CGRectMake(self.lastSelectedButton.frame.origin.x, self.lastSelectedButton.bounds.size.height - 2, self.lastSelectedButton.bounds.size.width, 2);
+            [self updateTwigView];
         }];
     }
 }

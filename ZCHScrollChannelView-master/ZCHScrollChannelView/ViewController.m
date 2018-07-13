@@ -28,20 +28,25 @@ static NSString *cellID = @"cellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    _titleArray = @[@"全部" ,@"内科" ,@"外科" ,@"妇科" ,@"儿科" ,@"口腔"];
+    _titleArray = @[@"直播" ,@"强烈推荐" ,@"你懂的" ,@"呵呵哒哒呵呵哒哒" ,@"神马情况" ,@"233333"];
     _channelView = [[ZCHChannelScrollView alloc] init];
     _channelView.intervalInLine = 40;
     _channelView.intervalHeader = 20;
     _channelView.intervalFooter = 20;
+    _channelView.twigViewHeight = 4;
+    _channelView.twigViewEqualToButtonWidth = YES;
+    _channelView.twigViewCornerRadius = 2;
     _channelView.backgroundColor = [UIColor redColor];
     _channelView.twigViewColor = [UIColor greenColor];
-    //这个要最后使用
     _channelView.titleArray = self.titleArray;
     [self.view addSubview:_channelView];
     [_channelView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.right.offset(0);
+        make.top.equalTo(self.mas_topLayoutGuide);
+        make.left.right.offset(0);
         make.height.offset(48);
     }];
+
+    [self.channelView reloadData];
 
     // MARK: 联动(点击channel联动collectionView)
     __weak typeof(self) weakSelf = self;

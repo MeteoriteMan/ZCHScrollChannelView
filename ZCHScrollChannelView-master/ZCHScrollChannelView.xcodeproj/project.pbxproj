@@ -56,10 +56,10 @@
 		432D85B120F60F6600B3AC37 /* ZCHScrollChannelView */ = {
 			isa = PBXGroup;
 			children = (
-				432D85B220F60F6600B3AC37 /* ZCHChannelButton.h */,
-				432D85B320F60F6600B3AC37 /* ZCHChannelScrollView.m */,
-				432D85B420F60F6600B3AC37 /* ZCHChannelButton.m */,
 				432D85B520F60F6600B3AC37 /* ZCHChannelScrollView.h */,
+				432D85B320F60F6600B3AC37 /* ZCHChannelScrollView.m */,
+				432D85B220F60F6600B3AC37 /* ZCHChannelButton.h */,
+				432D85B420F60F6600B3AC37 /* ZCHChannelButton.m */,
 			);
 			name = ZCHScrollChannelView;
 			path = ../../ZCHScrollChannelView;

@@ -22,6 +22,10 @@
 }
 */
 
+- (void)setHighlighted:(BOOL)highlighted {
+    
+}
+
 + (instancetype)zch_ButtonWithTitle:(NSString *)str normalFont:(UIFont *)normalFont normalColor:(UIColor *)normalColor selectedColor:(UIColor *)slectedColor {
     ZCHChannelButton *btn = [[self alloc] init];
     //初始化

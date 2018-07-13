@@ -23,6 +23,17 @@
 ///组间间距
 @property (nonatomic ,assign) NSInteger intervalInLine;
 
+/// twigView高度
+@property (nonatomic ,assign) CGFloat twigViewHeight;
+
+/// twigView宽度
+@property (nonatomic ,assign) CGFloat twigViewWidth;
+
+/// TwigView切边
+@property (nonatomic ,assign) CGFloat twigViewCornerRadius;
+
+@property (nonatomic ,assign) BOOL twigViewEqualToButtonWidth;
+
 // MARK: 颜色
 ///normal颜色
 @property (nonatomic ,strong) UIColor *normalColor;
@@ -30,24 +41,26 @@
 ///选中颜色
 @property (nonatomic ,strong) UIColor *selectedColor;
 
-//twigView颜色
+/// twigView颜色
 @property (nonatomic ,strong) UIColor *twigViewColor;
 
 // MARK: 字体
-//字体:默认system.re
+/// 字体:默认system.re
 @property (nonatomic ,strong) UIFont *font;
 
 // MARK: 字体大小
-//字体大小:默认15
+/// 字体大小:默认15
 @property (nonatomic ,assign) CGFloat fontSize;
 
 // MARK:联动有关
-//选中第几个Btn(tag,0-n).传入参数滚动到相应Btn
+/// 选中第几个Btn(tag,0-n).传入参数滚动到相应Btn
 @property (nonatomic ,assign) NSInteger btnTag;
 
 /**
  点击channel中的按钮回调方法.tag为第几个按钮
  */
 @property (nonatomic ,copy) void(^chancelSelectedBlock)(NSInteger tag);
+
+- (void)reloadData;
 
 @end
