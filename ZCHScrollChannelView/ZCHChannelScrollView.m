@@ -181,11 +181,15 @@
     } else {
         twigViewWidth = self.twigViewWidth;
     }
-    self.twigView.frame = CGRectMake(0, 0, twigViewWidth, self.twigViewHeight);
-    self.twigView.center = CGPointMake(self.lastSelectedButton.center.x, self.lastSelectedButton.bounds.size.height - self.twigViewHeight / 2);
-    self.twigView.layer.cornerRadius = self.twigViewCornerRadius;
-    self.twigView.layer.masksToBounds = YES;
-    [self.twigView layoutIfNeeded];
+    if (self.twigViewHidden) {
+        self.twigView.hidden = YES;
+    } else {
+        self.twigView.frame = CGRectMake(0, 0, twigViewWidth, self.twigViewHeight);
+        self.twigView.center = CGPointMake(self.lastSelectedButton.center.x, self.lastSelectedButton.bounds.size.height - self.twigViewHeight / 2);
+        self.twigView.layer.cornerRadius = self.twigViewCornerRadius;
+        self.twigView.layer.masksToBounds = YES;
+        [self.twigView layoutIfNeeded];
+    }
 }
 
 /**

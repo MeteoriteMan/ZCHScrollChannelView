@@ -35,6 +35,7 @@ static NSString *cellID = @"cellID";
     _channelView.intervalFooter = 20;
     _channelView.twigViewHeight = 4;
     _channelView.twigViewEqualToButtonWidth = YES;
+    _channelView.twigViewHidden = YES;
     _channelView.twigViewCornerRadius = 2;
     _channelView.backgroundColor = [UIColor redColor];
     _channelView.twigViewColor = [UIColor greenColor];

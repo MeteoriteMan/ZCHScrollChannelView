@@ -34,7 +34,11 @@ typedef void(^ZCHChannelScrollViewChancelSelectedBlock)(NSInteger tag);
 /// TwigView切边
 @property (nonatomic ,assign) CGFloat twigViewCornerRadius;
 
+/// TwigView等于Channel的宽度
 @property (nonatomic ,assign) BOOL twigViewEqualToButtonWidth;
+
+/// 隐藏TwigView
+@property (nonatomic ,assign) BOOL twigViewHidden;
 
 // MARK: 颜色
 ///normal颜色
