@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^ZCHChannelScrollViewChancelSelectedBlock)(NSInteger tag);
+
 @interface ZCHChannelScrollView : UIScrollView
 
 ///scrollView标签
@@ -59,7 +61,7 @@
 /**
  点击channel中的按钮回调方法.tag为第几个按钮
  */
-@property (nonatomic ,copy) void(^chancelSelectedBlock)(NSInteger tag);
+@property (nonatomic ,copy) ZCHChannelScrollViewChancelSelectedBlock chancelSelectedBlock;
 
 - (void)reloadData;
 
