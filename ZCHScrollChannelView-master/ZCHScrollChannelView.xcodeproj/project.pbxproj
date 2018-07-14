@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		432D85B620F60F6600B3AC37 /* ZCHChannelScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 432D85B320F60F6600B3AC37 /* ZCHChannelScrollView.m */; };
+		432D85B620F60F6600B3AC37 /* ZCHScrollChannelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 432D85B320F60F6600B3AC37 /* ZCHScrollChannelView.m */; };
 		432D85B720F60F6600B3AC37 /* ZCHChannelButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 432D85B420F60F6600B3AC37 /* ZCHChannelButton.m */; };
 		439C34892013192200B86B5A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 439C34882013192200B86B5A /* AppDelegate.m */; };
 		439C348C2013192200B86B5A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 439C348B2013192200B86B5A /* ViewController.m */; };
@@ -22,9 +22,9 @@
 /* Begin PBXFileReference section */
 		2ABEBAE5C2834F457B03E5BF /* Pods-ZCHScrollChannelView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZCHScrollChannelView.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZCHScrollChannelView/Pods-ZCHScrollChannelView.release.xcconfig"; sourceTree = "<group>"; };
 		432D85B220F60F6600B3AC37 /* ZCHChannelButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZCHChannelButton.h; sourceTree = "<group>"; };
-		432D85B320F60F6600B3AC37 /* ZCHChannelScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZCHChannelScrollView.m; sourceTree = "<group>"; };
+		432D85B320F60F6600B3AC37 /* ZCHScrollChannelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZCHScrollChannelView.m; sourceTree = "<group>"; };
 		432D85B420F60F6600B3AC37 /* ZCHChannelButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZCHChannelButton.m; sourceTree = "<group>"; };
-		432D85B520F60F6600B3AC37 /* ZCHChannelScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZCHChannelScrollView.h; sourceTree = "<group>"; };
+		432D85B520F60F6600B3AC37 /* ZCHScrollChannelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZCHScrollChannelView.h; sourceTree = "<group>"; };
 		439C34842013192200B86B5A /* ZCHScrollChannelView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZCHScrollChannelView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		439C34872013192200B86B5A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		439C34882013192200B86B5A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -56,8 +56,8 @@
 		432D85B120F60F6600B3AC37 /* ZCHScrollChannelView */ = {
 			isa = PBXGroup;
 			children = (
-				432D85B520F60F6600B3AC37 /* ZCHChannelScrollView.h */,
-				432D85B320F60F6600B3AC37 /* ZCHChannelScrollView.m */,
+				432D85B520F60F6600B3AC37 /* ZCHScrollChannelView.h */,
+				432D85B320F60F6600B3AC37 /* ZCHScrollChannelView.m */,
 				432D85B220F60F6600B3AC37 /* ZCHChannelButton.h */,
 				432D85B420F60F6600B3AC37 /* ZCHChannelButton.m */,
 			);
@@ -244,7 +244,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				432D85B620F60F6600B3AC37 /* ZCHChannelScrollView.m in Sources */,
+				432D85B620F60F6600B3AC37 /* ZCHScrollChannelView.m in Sources */,
 				439C348C2013192200B86B5A /* ViewController.m in Sources */,
 				439C34972013192200B86B5A /* main.m in Sources */,
 				432D85B720F60F6600B3AC37 /* ZCHChannelButton.m in Sources */,

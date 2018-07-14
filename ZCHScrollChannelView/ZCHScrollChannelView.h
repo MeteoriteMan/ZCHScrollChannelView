@@ -1,5 +1,5 @@
 //
-//  ZCHChannelScrollView.h
+//  ZCHScrollChannelView.h
 //  ZCHScrollChannelView
 //
 //  Created by 张晨晖 on 2018/1/20.
@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^ZCHChannelScrollViewChancelSelectedBlock)(NSInteger tag);
+typedef void(^ZCHScrollChannelViewChancelSelectedBlock)(NSInteger tag);
 
-@interface ZCHChannelScrollView : UIScrollView
+@interface ZCHScrollChannelView : UIScrollView
 
 ///scrollView标签
 @property (nonatomic ,strong) NSArray <NSString *> *titleArray;
@@ -65,7 +65,7 @@ typedef void(^ZCHChannelScrollViewChancelSelectedBlock)(NSInteger tag);
 /**
  点击channel中的按钮回调方法.tag为第几个按钮
  */
-@property (nonatomic ,copy) ZCHChannelScrollViewChancelSelectedBlock chancelSelectedBlock;
+@property (nonatomic ,copy) ZCHScrollChannelViewChancelSelectedBlock chancelSelectedBlock;
 
 - (void)reloadData;
 

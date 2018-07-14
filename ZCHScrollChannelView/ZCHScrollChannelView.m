@@ -1,15 +1,15 @@
 //
-//  ZCHChannelScrollView.m
+//  ZCHScrollChannelView.m
 //  ZCHScrollChannelView
 //
 //  Created by 张晨晖 on 2018/1/20.
 //  Copyright © 2018年 张晨晖. All rights reserved.
 //
 
-#import "ZCHChannelScrollView.h"
+#import "ZCHScrollChannelView.h"
 #import "ZCHChannelButton.h"
 
-@interface ZCHChannelScrollView ()
+@interface ZCHScrollChannelView ()
 
 ///按钮数组
 @property (nonatomic ,strong) NSArray <ZCHChannelButton *> *buttonArray;
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation ZCHChannelScrollView {
+@implementation ZCHScrollChannelView {
     UIColor *_twigViewColor;
 }
 
@@ -51,7 +51,7 @@
 
 - (void)setTwigViewColor:(UIColor *)twigViewColor {
     _twigViewColor = twigViewColor;
-    self.twigView.backgroundColor = twigViewColor;
+    _twigView.backgroundColor = twigViewColor;
 }
 
 //字体
@@ -105,29 +105,44 @@
 // 计算SubView的frame
 - (void)setButtonArray:(NSArray *)buttonArray {
     _buttonArray = buttonArray;
-    CGFloat lastX = _intervalHeader;
-    for (int i = 0; i < buttonArray.count; i++) {
-        ZCHChannelButton *btn = ((ZCHChannelButton *)buttonArray[i]);
-        [btn addTarget:self action:@selector(btnClickWithBtn:) forControlEvents:UIControlEventTouchUpInside];
-        if (i == 0) {//初始化第一个btn的选中状态
-            btn.selected = YES;
-            self.lastSelectedButton = btn;
-            [self updateTwigView];
+    if (buttonArray.count != 0) {
+        CGFloat lastX = _intervalHeader;
+        for (int i = 0; i < buttonArray.count; i++) {
+            ZCHChannelButton *btn = ((ZCHChannelButton *)buttonArray[i]);
+            [btn addTarget:self action:@selector(btnClickWithBtn:) forControlEvents:UIControlEventTouchUpInside];
+            if (i == 0) {//初始化第一个btn的选中状态
+                btn.selected = YES;
+                self.lastSelectedButton = btn;
+                self.btnTag = 0;
+                if (!_twigView) {
+                    [self addSubview:self.twigView];
+                }
+                [self updateTwigView];
+            }
+            [self addSubview:btn];
+            //x
+            CGFloat X = lastX;
+            //y
+            CGFloat Y = 0.0;
+            //w
+            CGFloat W = btn.frame.size.width;
+            //h高暂不做处理
+            CGFloat H = btn.frame.size.height;
+            btn.frame = CGRectMake(X, Y, W, H);
+            lastX = X + W + self.intervalInLine;
         }
-        [self addSubview:btn];
-        //x
-        CGFloat X = lastX;
-        //y
-        CGFloat Y = 0.0;
-        //w
-        CGFloat W = btn.frame.size.width;
-        //h高暂不做处理
-        CGFloat H = btn.frame.size.height;
-        btn.frame = CGRectMake(X, Y, W, H);
-        lastX = X + W + self.intervalInLine;
+        //这个时候应该是没有height的.暂不做处理
+        self.contentSize = CGSizeMake(lastX - self.intervalInLine + self.intervalFooter, self.bounds.size.height);
+        [self scrollRectToVisible:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height) animated:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.chancelSelectedBlock) {
+                self.chancelSelectedBlock(self.btnTag);
+            }
+        });
+    } else {
+        [self.twigView removeFromSuperview];
+        self.twigView = nil;
     }
-    //这个时候应该是没有height的.暂不做处理
-    self.contentSize = CGSizeMake(lastX - self.intervalInLine + self.intervalFooter, self.bounds.size.height);
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -155,16 +170,15 @@
         //h高暂不做处理
         CGFloat H = self.bounds.size.height;
         btn.frame = CGRectMake(X, Y, W, H);
-        [UIView animateWithDuration:.25 animations:^{
+//        [UIView animateWithDuration:.25 animations:^{
             [self updateTwigView];
-        }];
+//        }];
     }
 }
 
 - (void)setupUI {
     self.showsHorizontalScrollIndicator = 0;
     self.bounces = NO;
-    [self addSubview:self.twigView];
 }
 
 - (void)btnClickWithBtn:(ZCHChannelButton *)btn {
