@@ -1,9 +1,11 @@
 # ZCHScrollChannelView
 
 ##效果
+
 ![](https://github.com/MeteoriteMan/Assets/blob/master/gif/ZCHScrollChannelView-iPhone%20X.gif?raw=true)
 
 ##使用
+
 ```
 	_titleArray = @[@"直播" ,@"强烈推荐" ,@"你懂的" ,@"呵呵哒哒呵呵哒哒" ,@"神马情况" ,@"233333"];
 	_channelView = [[ZCHScrollChannelView alloc] init];
@@ -17,6 +19,7 @@
 ```
 
 ##安装
+
 使用 [CocoaPods](http://www.cocoapods.com/) 集成.
 首先在podfile中
 >`pod 'ZCHScrollChannelView'`
