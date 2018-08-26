@@ -55,19 +55,18 @@
 }
 
 //字体
-- (UIFont *)font {
-    if (_font == nil) {
-        _font = [UIFont systemFontOfSize:self.fontSize];
+- (UIFont *)normalFont {
+    if (_normalFont == nil) {
+        _normalFont = [UIFont systemFontOfSize:15];
     }
-    return _font;
+    return _normalFont;
 }
 
-//字体大小
-- (CGFloat)fontSize {
-    if (_fontSize == 0) {//没有设置字体
-        _fontSize = 15;
+- (UIFont *)selectedFont {
+    if (_selectedFont == nil) {
+        _selectedFont = self.normalFont;
     }
-    return _fontSize;
+    return _selectedFont;
 }
 
 - (UIView *)twigView {
@@ -94,7 +93,7 @@
     }
     NSMutableArray *arrayM = [NSMutableArray array];
     for (int i  = 0; i < self.titleArray.count; i++) {
-        ZCHChannelButton *btn = [ZCHChannelButton zch_ButtonWithTitle:self.titleArray[i] normalFont:self.font normalColor:self.normalColor selectedColor:self.selectedColor];
+        ZCHChannelButton *btn = [ZCHChannelButton zch_ButtonWithTitle:self.titleArray[i] normalFont:self.normalFont selectedFont:self.selectedFont normalColor:self.normalColor selectedColor:self.selectedColor];
         btn.tag = i;
         [btn sizeToFit];
         [arrayM addObject:btn];
@@ -126,9 +125,10 @@
             CGFloat Y = 0.0;
             //w
             CGFloat W = btn.frame.size.width;
-            //h高暂不做处理
-            CGFloat H = btn.frame.size.height;
-            btn.frame = CGRectMake(X, Y, W, H);
+            [self layoutIfNeeded];
+            CGFloat H = self.bounds.size.height;
+            btn.center = CGPointMake(X + W / 2, Y + H / 2);
+            btn.bounds = CGRectMake(0, 0, W, H);
             lastX = X + W + self.intervalInLine;
         }
         //这个时候应该是没有height的.暂不做处理
@@ -161,18 +161,13 @@
     [super layoutSubviews];
     for (int i = 0; i < _buttonArray.count; i++) {
         ZCHChannelButton *btn = ((ZCHChannelButton *)_buttonArray[i]);
-        //x
-        CGFloat X = btn.frame.origin.x;
-        //y
-        CGFloat Y = btn.frame.origin.y;
-        //w
-        CGFloat W = btn.frame.size.width;
-        //h高暂不做处理
-        CGFloat H = self.bounds.size.height;
-        btn.frame = CGRectMake(X, Y, W, H);
-//        [UIView animateWithDuration:.25 animations:^{
-            [self updateTwigView];
-//        }];
+        CGPoint center = btn.center;
+        CGFloat height = self.bounds.size.height;
+        [btn sizeToFit];
+        CGFloat width = btn.bounds.size.width;
+        btn.center = CGPointMake(center.x, center.y);
+        btn.bounds = CGRectMake(0, 0, width, height);
+        [self updateTwigView];
     }
 }
 
@@ -199,7 +194,7 @@
         self.twigView.hidden = YES;
     } else {
         self.twigView.frame = CGRectMake(0, 0, twigViewWidth, self.twigViewHeight);
-        self.twigView.center = CGPointMake(self.lastSelectedButton.center.x, self.lastSelectedButton.bounds.size.height - self.twigViewHeight / 2);
+        self.twigView.center = CGPointMake(self.lastSelectedButton.center.x, self.bounds.size.height - self.twigViewHeight / 2);
         self.twigView.layer.cornerRadius = self.twigViewCornerRadius;
         self.twigView.layer.masksToBounds = YES;
         [self.twigView layoutIfNeeded];

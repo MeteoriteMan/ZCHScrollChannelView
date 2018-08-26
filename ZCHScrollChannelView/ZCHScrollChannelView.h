@@ -51,12 +51,11 @@ typedef void(^ZCHScrollChannelViewChancelSelectedBlock)(NSInteger tag);
 @property (nonatomic ,strong) UIColor *twigViewColor;
 
 // MARK: 字体
-/// 字体:默认system.re
-@property (nonatomic ,strong) UIFont *font;
+/// 字体:默认状态字体
+@property (nonatomic ,strong) UIFont *normalFont;
 
-// MARK: 字体大小
-/// 字体大小:默认15
-@property (nonatomic ,assign) CGFloat fontSize;
+/// 字体:选中状态字体
+@property (nonatomic ,strong) UIFont *selectedFont;
 
 // MARK:联动有关
 /// 选中第几个Btn(tag,0-n).传入参数滚动到相应Btn

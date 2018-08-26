@@ -10,6 +10,16 @@
 
 @interface ZCHChannelButton : UIButton
 
-+ (instancetype)zch_ButtonWithTitle:(NSString *)str normalFont:(UIFont *)normalFont normalColor:(UIColor *)normalColor selectedColor:(UIColor *)slectedColor;
+/**
+ 创建按钮方法
+
+ @param str 按钮文字
+ @param normalFont 按钮普通状态字体
+ @param selectedFont 按钮选中状态字体
+ @param normalColor 按钮普通状态颜色
+ @param slectedColor 按钮选中状态颜色
+ @return 按钮
+ */
++ (instancetype)zch_ButtonWithTitle:(NSString *)str normalFont:(UIFont *)normalFont selectedFont:(UIFont *)selectedFont normalColor:(UIColor *)normalColor selectedColor:(UIColor *)slectedColor;
 
 @end
