@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = "ZCHScrollChannelView"
-    s.version      = "0.0.4"
+    s.version      = "0.0.5"
     s.summary      = "You can Use ZCHScrollChannelView to build channelView"
     s.homepage     = "https://github.com/MeteoriteMan/ZCHScrollChannelView"
     s.license      = "MIT"

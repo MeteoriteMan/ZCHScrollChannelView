@@ -228,6 +228,7 @@
         [UIView animateWithDuration:.25 animations:^{
             [self updateTwigView];
         }];
+        [self layoutSubviews];
     }
 }
 
