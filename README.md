@@ -27,3 +27,13 @@
 安装一下pod
 
 >`#import <ZCHScrollChannelView/ZCHScrollChannelView.h>`
+
+## 更新记录
+
+|版本|更新内容|
+|:--|:--|
+|0.0.1|支持TwigView.按钮正常/选中状态颜色设置.按钮字体设置等.|
+|0.0.2|拓展TwigView的功能.可以手动隐藏|
+|0.0.3|统一命名,修复TwigView显示错乱问题|
+|0.0.4|新增设置按钮正常/选中状态字体的设置|
+|0.0.5|修复0.0.4版本中宽度不跟随选中按钮宽度时不更新TwigView的BUG|
