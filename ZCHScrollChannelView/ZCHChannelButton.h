@@ -10,8 +10,10 @@
 
 @interface ZCHChannelButton : UIButton
 
+@property (nonatomic ,copy ,readonly ,nullable) NSString *reuseIdentifier;
+
 /**
- 创建按钮方法
+ 
 
  @param str 按钮文字
  @param normalFont 按钮普通状态字体
@@ -20,6 +22,8 @@
  @param slectedColor 按钮选中状态颜色
  @return 按钮
  */
-+ (instancetype)zch_ButtonWithTitle:(NSString *)str normalFont:(UIFont *)normalFont selectedFont:(UIFont *)selectedFont normalColor:(UIColor *)normalColor selectedColor:(UIColor *)slectedColor;
+- (instancetype _Nullable)setButtonWithTitle:(nullable NSString *)str normalFont:(nullable UIFont *)normalFont selectedFont:(nullable UIFont *)selectedFont normalColor:(nullable UIColor *)normalColor selectedColor:(nullable UIColor *)slectedColor;
+
+- (instancetype _Nullable)initWithReuseIdentifier:(nullable NSString *)reuseIdentifier;
 
 @end

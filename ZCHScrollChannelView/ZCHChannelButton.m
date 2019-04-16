@@ -28,6 +28,13 @@
 }
 */
 
+- (instancetype)initWithReuseIdentifier:(nullable NSString *)reuseIdentifier {
+    if (self = [super init]) {
+        _reuseIdentifier = reuseIdentifier;
+    }
+    return self;
+}
+
 - (void)setSelected:(BOOL)selected {
     [super setSelected:selected];
     if (selected) {
@@ -38,19 +45,17 @@
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
-    
 }
 
-+ (instancetype)zch_ButtonWithTitle:(NSString *)str normalFont:(UIFont *)normalFont selectedFont:(UIFont *)selectedFont normalColor:(UIColor *)normalColor selectedColor:(UIColor *)slectedColor {
-    ZCHChannelButton *btn = [[self alloc] init];
+- (instancetype)setButtonWithTitle:(NSString *)str normalFont:(UIFont *)normalFont selectedFont:(UIFont *)selectedFont normalColor:(UIColor *)normalColor selectedColor:(UIColor *)slectedColor {
     //初始化
-    [btn setTitle:str forState:UIControlStateNormal];
-    btn.titleLabel.font = normalFont;
-    [btn setTitleColor:normalColor forState:UIControlStateNormal];
-    [btn setTitleColor:slectedColor forState:UIControlStateSelected];
-    btn.normalFont = normalFont;
-    btn.selectedFont = selectedFont;
-    return btn;
+    [self setTitle:str forState:UIControlStateNormal];
+    self.titleLabel.font = normalFont;
+    [self setTitleColor:normalColor forState:UIControlStateNormal];
+    [self setTitleColor:slectedColor forState:UIControlStateSelected];
+    self.normalFont = normalFont;
+    self.selectedFont = selectedFont;
+    return self;
 }
 
 @end

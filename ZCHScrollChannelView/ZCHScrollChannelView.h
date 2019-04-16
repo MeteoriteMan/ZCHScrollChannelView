@@ -8,12 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^ZCHScrollChannelViewChancelSelectedBlock)(NSInteger tag);
+@class ZCHScrollChannelView;
+
+typedef void(^ZCHScrollChannelViewDidSelectItemBlock)(ZCHScrollChannelView *scrollChannelView ,NSInteger index);
+
+@protocol ZCHScrollChannelViewDelegate <NSObject>
+
+- (void)scrollChannelView:(ZCHScrollChannelView *)scrollChannelView didSelectItemAtIndex:(NSInteger)index;
+
+@end
 
 @interface ZCHScrollChannelView : UIScrollView
 
 ///scrollView标签
 @property (nonatomic ,strong) NSArray <NSString *> *titleArray;
+
+@property (nonatomic ,weak) id <ZCHScrollChannelViewDelegate> scrollChannelViewDelegate;
 
 // MARK: 间距
 ///组头间距
@@ -58,13 +68,13 @@ typedef void(^ZCHScrollChannelViewChancelSelectedBlock)(NSInteger tag);
 @property (nonatomic ,strong) UIFont *selectedFont;
 
 // MARK:联动有关
-/// 选中第几个Btn(tag,0-n).传入参数滚动到相应Btn
-@property (nonatomic ,assign) NSInteger btnTag;
+/// 
+@property (nonatomic ,assign) NSInteger selectIndex;
 
 /**
  点击channel中的按钮回调方法.tag为第几个按钮
  */
-@property (nonatomic ,copy) ZCHScrollChannelViewChancelSelectedBlock chancelSelectedBlock;
+@property (nonatomic ,copy) ZCHScrollChannelViewDidSelectItemBlock didSelectItemBlock;
 
 - (void)reloadData;
 

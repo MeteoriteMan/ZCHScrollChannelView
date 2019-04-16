@@ -28,16 +28,16 @@ static NSString *cellID = @"cellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    _titleArray = @[@"直播" ,@"强烈推荐" ,@"你懂的" ,@"呵呵哒哒呵呵哒哒" ,@"神马情况" ,@"233333"];
+    _titleArray = @[@"StartCraft", @"StartCraft II", @"World of Warcraft", @"Over Watch", @"Hero Of Storm", @"Warcraft III", @"Age of Empires Ⅲ", @"Red Alert 2", @"Call Of Duty"];
     _channelView = [[ZCHScrollChannelView alloc] init];
-    _channelView.intervalInLine = 40;
-    _channelView.intervalHeader = 20;
-    _channelView.intervalFooter = 20;
+    _channelView.intervalInLine = 8;
+    _channelView.intervalHeader = 12;
+    _channelView.intervalFooter = 12;
     _channelView.twigViewHeight = 4;
     _channelView.twigViewWidth = 16;
-//    _channelView.twigViewEqualToButtonWidth = YES;
+    _channelView.twigViewEqualToButtonWidth = YES;
     _channelView.normalFont = [UIFont systemFontOfSize:12];
-    _channelView.selectedFont = [UIFont systemFontOfSize:18];
+    _channelView.selectedFont = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
 //    _channelView.twigViewHidden = YES;
     _channelView.twigViewCornerRadius = 2;
     _channelView.backgroundColor = [UIColor redColor];
@@ -49,13 +49,18 @@ static NSString *cellID = @"cellID";
         make.left.right.offset(0);
         make.height.offset(48);
     }];
-
     [self.channelView reloadData];
+    self.channelView.selectIndex = 0;
+
+//#pragma mark 测试
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 5), dispatch_get_main_queue(), ^{
+//        self.channelView.btnTag = 7;
+//    });
 
     // MARK: 联动(点击channel联动collectionView)
     __weak typeof(self) weakSelf = self;
-    _channelView.chancelSelectedBlock = ^(NSInteger tag) {
-        [weakSelf.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:tag inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
+    _channelView.didSelectItemBlock = ^(ZCHScrollChannelView *scrollChannelView, NSInteger index) {
+        [weakSelf.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
     };
 
     CollectionViewFlowLayout *flowLayout = [[CollectionViewFlowLayout alloc] init];
@@ -118,7 +123,7 @@ static NSString *cellID = @"cellID";
     if (scrollView == self.collectionView) {
         if (scrollView.isDragging || scrollView.isTracking || scrollView.isDecelerating) {//手动滚动
             // 计算Page
-            self.channelView.btnTag = (scrollView.contentOffset.x / scrollView.bounds.size.width);
+            self.channelView.selectIndex = (scrollView.contentOffset.x / scrollView.bounds.size.width);
         }
     }
 }
@@ -155,7 +160,7 @@ static NSString *cellID = @"cellID";
         self.channelView.titleArray = self.titleArray;
         [self.channelView reloadData];
         [self.collectionView reloadData];
-
+        self.channelView.selectIndex = 0;
     } else {
         self.titleArray = nil;
         self.channelView.titleArray = nil;
