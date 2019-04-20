@@ -11,9 +11,6 @@
 
 @interface ZCHScrollChannelView ()
 
-/// 滚动条
-@property (nonatomic ,strong) UIView *twigView;
-
 /// 正在显示的Item
 @property (nonatomic ,strong) NSMutableDictionary *cachedItems;
 
@@ -320,7 +317,7 @@
                 self.twigView.layer.masksToBounds = YES;
                 [UIView animateWithDuration:self.twigView.frame.origin.x==0.0?0:.25 animations:^{
                     self.twigView.frame = CGRectMake(0, 0, twigViewWidth, self.twigViewHeight);
-                    self.twigView.center = CGPointMake(selectBtnRect.origin.x + selectBtnRect.size.width / 2, self.bounds.size.height - self.twigViewHeight / 2);
+                    self.twigView.center = CGPointMake(selectBtnRect.origin.x + selectBtnRect.size.width / 2, self.bounds.size.height - self.twigViewHeight / 2 - self.twigViewBottom);
                 }];
             }
         }

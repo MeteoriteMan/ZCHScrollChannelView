@@ -14,6 +14,7 @@ typedef void(^ZCHScrollChannelViewDidSelectItemBlock)(ZCHScrollChannelView *scro
 
 @protocol ZCHScrollChannelViewDelegate <NSObject>
 
+@optional
 - (void)scrollChannelView:(ZCHScrollChannelView *)scrollChannelView didSelectItemAtIndex:(NSInteger)index;
 
 @end
@@ -35,11 +36,18 @@ typedef void(^ZCHScrollChannelViewDidSelectItemBlock)(ZCHScrollChannelView *scro
 ///组间间距
 @property (nonatomic ,assign) NSInteger intervalInLine;
 
+// MARK: 指示器View
+/// 滚动条
+@property (nonatomic ,strong) UIView *twigView;
+
 /// twigView高度
 @property (nonatomic ,assign) CGFloat twigViewHeight;
 
 /// twigView宽度
 @property (nonatomic ,assign) CGFloat twigViewWidth;
+
+/// twigView距离底部的高度
+@property (nonatomic ,assign) CGFloat twigViewBottom;
 
 /// TwigView切边
 @property (nonatomic ,assign) CGFloat twigViewCornerRadius;

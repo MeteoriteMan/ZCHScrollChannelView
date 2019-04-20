@@ -37,12 +37,13 @@ static NSString *cellID = @"cellID";
     _channelView.twigViewWidth = 16;
     _channelView.twigViewEqualToButtonWidth = YES;
     _channelView.normalFont = [UIFont systemFontOfSize:12];
-    _channelView.selectedFont = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    _channelView.selectedFont = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
 //    _channelView.twigViewHidden = YES;
     _channelView.twigViewCornerRadius = 2;
     _channelView.backgroundColor = [UIColor redColor];
     _channelView.twigViewColor = [UIColor greenColor];
     _channelView.titleArray = self.titleArray;
+    _channelView.twigViewBottom = 4;
     [self.view addSubview:_channelView];
     [_channelView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_topLayoutGuide);
@@ -62,7 +63,7 @@ static NSString *cellID = @"cellID";
     _channelView.didSelectItemBlock = ^(ZCHScrollChannelView *scrollChannelView, NSInteger index) {
         [weakSelf.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
     };
-
+    
     CollectionViewFlowLayout *flowLayout = [[CollectionViewFlowLayout alloc] init];
     self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
     _collectionView.bounces = NO;
