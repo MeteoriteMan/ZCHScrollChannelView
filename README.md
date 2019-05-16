@@ -16,8 +16,8 @@
         make.height.offset(48);
     }];
     [self.channelView reloadData];	
-    /// 设置选中Tag
-    self.channelView.btnTag = 0;
+    /// 设置默认选中item(如不设置默认不选中)
+    self.channelView.defaultSelectItem = 0;
 ```
 
 ## 安装
@@ -34,6 +34,7 @@
 
 |版本|更新内容|
 |:--|:--|
+|0.0.8|优化reloadData刷新效果.现支持setSelectItem:animated:|
 |0.0.7|支持设置TwigView距离底边的距离|
 |0.0.6|大更新,在API不改动的前提下新增控件的缓存池减小内存消耗.现在reloadData之后需要设置选中的btnTag.|
 |0.0.5|修复0.0.4版本中宽度不跟随选中按钮宽度时不更新TwigView的BUG|

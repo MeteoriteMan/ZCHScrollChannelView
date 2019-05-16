@@ -75,14 +75,20 @@ typedef void(^ZCHScrollChannelViewDidSelectItemBlock)(ZCHScrollChannelView *scro
 /// 字体:选中状态字体
 @property (nonatomic ,strong) UIFont *selectedFont;
 
+/// 默认选中Index
+@property (nonatomic ,assign) NSInteger defaultSelectIndex;
+
 // MARK:联动有关
-/// 
+/// 建议使用下面的setSelectItemAtIndex: animated:
 @property (nonatomic ,assign) NSInteger selectIndex;
 
 /**
  点击channel中的按钮回调方法.tag为第几个按钮
  */
 @property (nonatomic ,copy) ZCHScrollChannelViewDidSelectItemBlock didSelectItemBlock;
+
+/// 选中某个按钮
+- (void)setSelectItemAtIndex:(NSInteger)index animated:(BOOL)animated;
 
 - (void)reloadData;
 

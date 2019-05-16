@@ -20,13 +20,15 @@
 @property (nonatomic ,assign) BOOL needsReload;
 
 /// 缓存计算的item的x位置
-@property (nonatomic ,assign) CGFloat *itemX;
+@property (nonatomic ,strong) NSMutableArray <NSNumber *> *itemX;
 
 /// 缓存计算的item宽度
-@property (nonatomic ,assign) CGFloat *itemWidth;
+@property (nonatomic ,strong) NSMutableArray <NSNumber *> *itemWidth;
 
 /// 当前选中行
 @property (nonatomic ,assign) NSInteger selectedRow;
+
+@property (nonatomic ,assign) BOOL animated;
 
 @end
 
@@ -92,6 +94,7 @@
 
 - (void)setSelectIndex:(NSInteger)selectIndex {
     _selectIndex = selectIndex;
+    self.animated = YES;
     [self selectedBtnWithTag:selectIndex];
 }
 
@@ -109,21 +112,25 @@
     [self setupUI];
 }
 
+- (void)setSelectItemAtIndex:(NSInteger)index animated:(BOOL)animated {
+    self.animated = animated;
+    [self selectedBtnWithTag:index];
+}
+
 - (void)reloadData {
-    free(self.itemWidth);
-    free(self.itemX);
-    self.selectedRow = -1;
+    self.selectedRow = self.defaultSelectIndex;
     // 移除已经显示的View.缓存池内的View
     [[self.cachedItems allValues] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.reusableItems makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.cachedItems removeAllObjects];
     [self.reusableItems removeAllObjects];
-    /// 存储Item的宽度
-    self.itemWidth = malloc(self.titleArray.count * sizeof(CGFloat));
-    self.itemX = malloc(self.titleArray.count * sizeof(CGFloat));
-    [self setContentSize];
+    [self.itemX removeAllObjects];
+    [self.itemWidth removeAllObjects];
     self.needsReload = NO;
+    [self layoutChannelViewContentSize];
     [self layoutChannelView];
+    self.animated = NO;
+    [self setSelectItemAtIndex:self.selectedRow animated:NO];
     [self updateTwigView];
 }
 
@@ -144,6 +151,14 @@
 - (void)setNeedsReload {
     self.needsReload = YES;
     [self setNeedsLayout];
+}
+
+/// 初次布局
+- (void)layoutChannelViewContentSize {
+    for (int i = 0; i < self.titleArray.count; i++) {
+        [self rectForItemAtRow:i];
+    }
+    [self setContentSize];
 }
 
 - (void)layoutChannelView {
@@ -211,7 +226,13 @@
 
 /// 给Item进行布局
 - (CGRect)rectForItemAtRow:(NSInteger)row {
-    if (self.itemWidth == nil || self.itemX == nil) {
+    if (_itemWidth.count > row && _itemX.count > row) {
+        return CGRectMake([self.itemX[row] doubleValue], 0, [_itemWidth[row] doubleValue], self.bounds.size.height);
+    }
+    if (_itemWidth == NULL || _itemX == NULL) {
+        return CGRectZero;
+    }
+    if (self.titleArray.count == 0 || self.titleArray.count - 1 < row) {//count是NSUInteger类型的
         return CGRectZero;
     }
     /// 计算Item的Rect
@@ -222,24 +243,24 @@
         lastWidth = 0.0;
         lastX = 0.0;
     } else {
-        lastWidth = self.itemWidth[row - 1];
-        lastX = self.itemX[row - 1];
+        lastWidth = [_itemWidth[row - 1] doubleValue];
+        lastX = [_itemX[row - 1] doubleValue];
     }
     // 2.计算当前的Rect
     CGRect currentRect = [self.titleArray[row] boundingRectWithSize:CGSizeMake(MAXFLOAT, self.bounds.size.height) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: self.normalFont.pointSize>self.selectedFont.pointSize?self.normalFont:self.selectedFont} context:nil];
     CGFloat header = row==0?self.intervalHeader:0.0;
     CGFloat interval = row==0?0:self.intervalInLine;
     CGRect itemRect = CGRectMake(header + interval + lastX + lastWidth , 0, currentRect.size.width, self.bounds.size.height);
-    self.itemWidth[row] = itemRect.size.width;
-    self.itemX[row] = itemRect.origin.x;
+    [_itemWidth insertObject:[NSNumber numberWithDouble:itemRect.size.width] atIndex:row];
+    [_itemX insertObject:[NSNumber numberWithDouble:itemRect.origin.x] atIndex:row];
     return itemRect;
 }
 
 - (void)setContentSize {
-    if (self.itemX == nil || self.itemWidth == nil) {
+    if (_itemX == NULL || _itemWidth == NULL) {
         self.contentSize = CGSizeMake(self.bounds.size.width, self.bounds.size.height);
     } else {
-        self.contentSize = CGSizeMake(self.itemX[self.titleArray.count - 1] + self.itemWidth[self.titleArray.count - 1] + self.intervalFooter, self.bounds.size.height);
+        self.contentSize = CGSizeMake([_itemX[self.titleArray.count - 1] doubleValue] + [_itemWidth[self.titleArray.count - 1] doubleValue] + self.intervalFooter, self.bounds.size.height);
     }
 }
 
@@ -264,7 +285,9 @@
 - (void)setupConfig {
     self.cachedItems = [[NSMutableDictionary alloc] init];
     self.reusableItems = [[NSMutableSet alloc] init];
-    self.selectedRow = -1;
+    self.itemX = [NSMutableArray array];
+    self.itemWidth = [NSMutableArray array];
+    self.selectedRow = self.defaultSelectIndex;
     [self setNeedsReload];
 }
 
@@ -275,6 +298,7 @@
 }
 
 - (void)btnClickWithBtn:(ZCHChannelButton *)sender {
+    self.animated = YES;
     [self selectedBtnWithTag:sender.tag];
     if (self.didSelectItemBlock) {
         self.didSelectItemBlock(self ,sender.tag);
@@ -293,7 +317,7 @@
     self.selectedRow = tag;
     // 取出btn
     CGRect rect = [self rectForItemAtRow:tag];
-    [self scrollRectToVisible:CGRectMake(rect.origin.x - self.bounds.size.width / 2 + rect.size.width / 2, 0, self.bounds.size.width, self.bounds.size.height) animated:YES];
+    [self scrollRectToVisible:CGRectMake(rect.origin.x - self.bounds.size.width / 2 + rect.size.width / 2, 0, self.bounds.size.width, self.bounds.size.height) animated:self.animated];
     [self layoutChannelView];
 }
 
@@ -315,7 +339,7 @@
                 }
                 self.twigView.layer.cornerRadius = self.twigViewCornerRadius;
                 self.twigView.layer.masksToBounds = YES;
-                [UIView animateWithDuration:self.twigView.frame.origin.x==0.0?0:.25 animations:^{
+                [UIView animateWithDuration:self.animated?(self.twigView.frame.origin.x==0.0?0:.25):0 animations:^{
                     self.twigView.frame = CGRectMake(0, 0, twigViewWidth, self.twigViewHeight);
                     self.twigView.center = CGPointMake(selectBtnRect.origin.x + selectBtnRect.size.width / 2, self.bounds.size.height - self.twigViewHeight / 2 - self.twigViewBottom);
                 }];
@@ -325,6 +349,10 @@
         self.twigView.hidden = YES;
         self.twigView.frame = CGRectZero;
     }
+}
+
+- (void)dealloc {
+    NSLog(@"%s" ,__FUNCTION__);
 }
 
 @end
