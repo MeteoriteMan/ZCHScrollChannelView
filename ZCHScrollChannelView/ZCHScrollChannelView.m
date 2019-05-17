@@ -127,6 +127,7 @@
     [self.itemX removeAllObjects];
     [self.itemWidth removeAllObjects];
     self.needsReload = NO;
+    self.selectedRow = self.titleArray.count!=0?self.selectedRow:-1;
     [self layoutChannelViewContentSize];
     [self layoutChannelView];
     self.animated = NO;
@@ -169,7 +170,10 @@
     /// 当前正在显示的Item
     NSMutableDictionary *availableItems = self.cachedItems.mutableCopy;
     [self.cachedItems removeAllObjects];
-    for (int i = 0; i < self.titleArray.count; i++) {
+    NSDictionary *minMaxRows = [self searchRowWithRect:visibleBounds];
+    NSInteger min = [[minMaxRows objectForKey:@"min"] integerValue];
+    NSInteger max = [[minMaxRows objectForKey:@"max"] integerValue];
+    for (NSInteger i = min; i < max + 1; i++) {
         NSNumber *index = @(i);
         CGRect itemRect = [self rectForItemAtRow:i];
         if (CGRectIntersectsRect(itemRect, visibleBounds)) {///在可显示区域内就进行布局
@@ -220,6 +224,45 @@
     }
 }
 
+/// 采取二分查找法.找到在显示范围内的row
+
+- (NSDictionary *)searchRowWithRect:(CGRect)showRect {
+    NSInteger max = (NSInteger)self.titleArray.count - 1;
+    NSInteger min = 0;
+    NSInteger mid = 0;
+    CGFloat left = showRect.origin.x;
+    CGFloat right = showRect.origin.x + showRect.size.width;
+    while (min <= max) {
+        mid = (max + min) * .5;
+        CGFloat rowLeft = [self.itemX[mid] doubleValue];
+        CGFloat rowRight = [self.itemX[mid] doubleValue] + [self.itemWidth[mid] doubleValue];
+        if (!((rowRight < left) || (rowLeft > right))) {//在范围内
+            for (NSInteger i = mid; i > min - 1; i--) {//从大找到小
+                if ([self.itemX[i] doubleValue] + [self.itemWidth[i] doubleValue] > left) {
+                    break;
+                }
+                min = i;
+            }
+            for (NSInteger i = mid; i < max + 1; i++) {//从小找到大
+                if ([self.itemX[i] doubleValue] < right) {
+                    break;
+                }
+                max = i;
+            }
+            break;
+        } else if (rowRight < left) {//如果在左边.折半
+            min = mid + 1;
+        } else {//如果在右边.折半
+            max = mid - 1;
+        }
+    }
+    if (min < 0 || max < 0) {
+        return @{@"min" :@(0) ,@"max" :@(max)};
+    } else {
+        return @{@"min" :@(min) ,@"max" :@(max)};
+    }
+}
+
 - (ZCHChannelButton *)itemForRow:(NSInteger)row {
     return [_cachedItems objectForKey:@(row)];
 }
@@ -229,7 +272,7 @@
     if (_itemWidth.count > row && _itemX.count > row) {
         return CGRectMake([self.itemX[row] doubleValue], 0, [_itemWidth[row] doubleValue], self.bounds.size.height);
     }
-    if (_itemWidth == NULL || _itemX == NULL) {
+    if (self.titleArray.count == 0) {
         return CGRectZero;
     }
     if (self.titleArray.count == 0 || self.titleArray.count - 1 < row) {//count是NSUInteger类型的
@@ -257,7 +300,7 @@
 }
 
 - (void)setContentSize {
-    if (_itemX == NULL || _itemWidth == NULL) {
+    if (self.titleArray.count == 0) {
         self.contentSize = CGSizeMake(self.bounds.size.width, self.bounds.size.height);
     } else {
         self.contentSize = CGSizeMake([_itemX[self.titleArray.count - 1] doubleValue] + [_itemWidth[self.titleArray.count - 1] doubleValue] + self.intervalFooter, self.bounds.size.height);

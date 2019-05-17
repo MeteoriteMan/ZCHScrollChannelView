@@ -19,6 +19,12 @@
 
 @property (nonatomic ,strong) NSArray *titleArray;
 
+@property (nonatomic ,strong) NSArray *titleArray1;
+
+@property (nonatomic ,strong) NSArray *titleArray2;
+
+@property (nonatomic ,strong) NSArray *titleArray3;
+
 @end
 
 @implementation ViewController
@@ -49,31 +55,19 @@ static NSString *cellID = @"cellID";
     [ZCHScrollChannelView appearance].twigViewColor = [UIColor orangeColor];
     [ZCHScrollChannelView appearance].defaultSelectIndex = 0;
 
-    self.titleArray = @[@"StartCraft", @"StartCraft II", @"World of Warcraft", @"Over Watch", @"Hero Of Storm", @"Warcraft III", @"Age of Empires Ⅲ", @"Red Alert 2", @"Call Of Duty"];
-
     /// MARK: Test
-//    NSMutableArray *arrayM = [NSMutableArray array];
-//    for (int i = 0; i < 100000; i++) {
-//        [arrayM addObject:[NSString stringWithFormat:@"%d",i]];
-//    }
-//    _titleArray = arrayM.copy;
+    NSMutableArray *arrayM = [NSMutableArray array];
+    for (int i = 0; i < 100000; i++) {
+        [arrayM addObject:[NSString stringWithFormat:@"%d",i]];
+    }
+    self.titleArray1 = arrayM.copy;
+    self.titleArray2 = @[@"StartCraft", @"StartCraft II", @"World of Warcraft", @"Over Watch", @"Hero Of Storm", @"Warcraft III", @"Age of Empires Ⅲ", @"Red Alert 2", @"Call Of Duty"];
+    self.titleArray3 = @[@"星际争霸", @"星际争霸II", @"魔兽世界", @"守望先锋", @"风暴英雄", @"魔兽争霸III", @"帝国时代Ⅲ", @"红色警戒2", @"使命召唤"];
+    self.titleArray = self.titleArray2;
 
 
     _channelView = [[ZCHScrollChannelView alloc] init];
-//    _channelView.intervalInLine = 8;
-//    _channelView.intervalHeader = 12;
-//    _channelView.intervalFooter = 12;
-//    _channelView.twigViewHeight = 4;
-//    _channelView.twigViewWidth = 16;
-//    _channelView.twigViewEqualToButtonWidth = YES;
-//    _channelView.normalFont = [UIFont systemFontOfSize:12];
-//    _channelView.selectedFont = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
-//    _channelView.twigViewHidden = YES;
-//    _channelView.twigViewCornerRadius = 2;
-//    _channelView.backgroundColor = [UIColor whiteColor];
-//    _channelView.twigViewColor = [UIColor greenColor];
     _channelView.titleArray = self.titleArray;
-//    _channelView.twigViewBottom = 4;
     [self.view addSubview:_channelView];
     [_channelView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_topLayoutGuide);
@@ -110,8 +104,9 @@ static NSString *cellID = @"cellID";
 
 
 
-    UIButton *buttonChangeChannel = [UIButton buttonWithType:UIButtonTypeContactAdd];
-    buttonChangeChannel.backgroundColor = [UIColor redColor];
+    UIButton *buttonChangeChannel = [UIButton new];
+    [buttonChangeChannel setTitle:@"reloadData" forState:UIControlStateNormal];
+    [buttonChangeChannel setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [self.view addSubview:buttonChangeChannel];
     [buttonChangeChannel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.equalTo(self.view);
@@ -186,8 +181,33 @@ static NSString *cellID = @"cellID";
 
 // MARK: 模拟网络延迟加载
 - (void)buttonChangeChannelClick {
-
+    int arc4 = arc4random_uniform(4);
+    NSLog(@"%d" ,arc4);
+    switch (arc4) {
+        case 0: {
+            self.titleArray = nil;
+        }
+            break;
+        case 1: {
+            self.titleArray = self.titleArray1;
+        }
+            break;
+        case 2: {
+            self.titleArray = self.titleArray2;
+        }
+            break;
+        case 3: {
+            self.titleArray = self.titleArray3;
+        }
+            break;
+        default: {
+            self.titleArray = nil;
+        }
+            break;
+    }
+    self.channelView.titleArray = self.titleArray;
     [self.channelView reloadData];
+    [self.collectionView reloadData];
 
 //    ViewController *vc = [[ViewController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];

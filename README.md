@@ -34,6 +34,7 @@
 
 |版本|更新内容|
 |:--|:--|
+|0.1.0|修复上个版本的titleArray个数为0的时候的bug,重写了布局方法,数量巨大(用了100万个数据的titleArray测试)的时候没有前面的版本那么卡了|
 |0.0.9|去掉log打印|
 |0.0.8|优化reloadData刷新效果.现支持setSelectItem:animated:|
 |0.0.7|支持设置TwigView距离底边的距离|
