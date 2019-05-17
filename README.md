@@ -34,6 +34,7 @@
 
 |版本|更新内容|
 |:--|:--|
+|0.0.9|去掉log打印|
 |0.0.8|优化reloadData刷新效果.现支持setSelectItem:animated:|
 |0.0.7|支持设置TwigView距离底边的距离|
 |0.0.6|大更新,在API不改动的前提下新增控件的缓存池减小内存消耗.现在reloadData之后需要设置选中的btnTag.|

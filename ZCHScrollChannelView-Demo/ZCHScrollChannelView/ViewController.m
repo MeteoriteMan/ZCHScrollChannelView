@@ -221,8 +221,4 @@ static NSString *cellID = @"cellID";
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc {
-    NSLog(@"%s",__FUNCTION__);
-}
-
 @end
