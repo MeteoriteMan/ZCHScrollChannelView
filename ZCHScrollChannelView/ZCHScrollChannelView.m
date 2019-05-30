@@ -204,7 +204,6 @@
                 item.frame = itemRect;
                 [self addSubview:item];
             }
-            [self setContentSize];
         }
     }
     /// 出屏幕的加入缓存池或者移除.
@@ -331,6 +330,7 @@
     self.itemX = [NSMutableArray array];
     self.itemWidth = [NSMutableArray array];
     self.selectedRow = self.defaultSelectIndex;
+    self.contentInset = UIEdgeInsetsZero;
     [self setNeedsReload];
 }
 
@@ -392,6 +392,25 @@
         self.twigView.hidden = YES;
         self.twigView.frame = CGRectZero;
     }
+}
+
+- (void)didMoveToSuperview {
+    if (@available(iOS 11.0, *)) {
+        self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    } else {
+        // Fallback on earlier versions
+        [self ch_viewController].automaticallyAdjustsScrollViewInsets = NO;
+    }
+}
+
+- (UIViewController *)ch_viewController {
+    for (UIView *view = self; view; view = view.superview) {
+        UIResponder *nextResponder = [view nextResponder];
+        if ([nextResponder isKindOfClass:[UIViewController class]]) {
+            return (UIViewController *)nextResponder;
+        }
+    }
+    return nil;
 }
 
 @end

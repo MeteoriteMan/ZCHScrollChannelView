@@ -66,10 +66,10 @@ static NSString *cellID = @"cellID";
     self.titleArray = self.titleArray2;
 
 
-    _channelView = [[ZCHScrollChannelView alloc] init];
-    _channelView.titleArray = self.titleArray;
-    [self.view addSubview:_channelView];
-    [_channelView mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.channelView = [[ZCHScrollChannelView alloc] init];
+    self.channelView.titleArray = self.titleArray;
+    [self.view addSubview:self.channelView];
+    [self.channelView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_topLayoutGuide);
         make.left.right.offset(0);
         make.height.offset(48);
